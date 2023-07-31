@@ -15,7 +15,7 @@
                     {{ alertMsg }}
                   </v-alert>
                  <v-card >
-                    <v-toolbar dark color="indigo darken-4" >
+                    <v-toolbar dark class="amber--text">
                        <v-toolbar-title>{{isRegister ? state.register.name : state.login.name}} {{ userStore.getUser }}</v-toolbar-title>
                     </v-toolbar>
                     <v-card-text >
@@ -25,7 +25,7 @@
                              name="username"
                              label="Username"
                              type="text"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              placeholder="username"
                              required
                              outlined
@@ -35,7 +35,7 @@
                              name="password"
                              label="Password"
                              type="password"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              placeholder="password"
                              required
                              outlined
@@ -45,7 +45,7 @@
                              v-model="confirmPassword"
                              name="confirmPassword"
                              label="Confirm Password"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              type="password"
                              placeholder="confirm password"
                              required
@@ -56,7 +56,7 @@
                              name="firstName"
                              label="First Name"
                              type="text"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              placeholder="firstName"
                              required
                              outlined
@@ -66,7 +66,7 @@
                              name="lastName"
                              label="Last Name"
                              type="text"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              placeholder="lastName"
                              required
                              outlined
@@ -76,7 +76,7 @@
                              name="email"
                              label="Email"
                              type="text"
-                             color="indigo darken-4"
+                             color="amber accent-3"
                              placeholder="email"
                              required
                              outlined
@@ -84,10 +84,10 @@
                           <v-container>
                             <v-row>
                                <v-col>
-                                  <v-btn dark type="submit" class="mt-4" color="indigo darken-4" value="log in">{{isRegister ? state.register.name : state.login.name}}</v-btn>
+                                  <v-btn text outlined type="submit" class="mt-4" color="amber accent-3" value="log in">{{isRegister ? state.register.name : state.login.name}}</v-btn>
                                </v-col>
                                <v-col>
-                                  <v-btn class="text-h7 mt-4" small text v-on:click="toggleAction()">
+                                  <v-btn class="text-h7 mt-4" dark small text v-on:click="toggleAction()">
                                      {{toggleMessage}}  
                                  </v-btn>
                                </v-col>
@@ -95,12 +95,18 @@
                           </v-container>
                      </form>
                     </v-card-text>
+                    <v-card-text>
+                      <v-spacer></v-spacer>
+                      Photo by <a href="https://unsplash.com/@momentsbyebba?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Ebba Thoresson</a> on <a href="https://unsplash.com/photos/Fjqb37yTdc4?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText">Unsplash</a>
+                    </v-card-text>
                  </v-card>
                 </v-col>
                 <v-col cols="1">
                 </v-col>
               </v-row>
+
            </v-layout>
+
         </v-container>
      </v-main>
 </template>
@@ -119,6 +125,7 @@ const AUTH_USER = gql`
   query AuthenticateUser($username: String!, $password: String!) {
     authenticateUser(username: $username, password: $password) {
       user {
+        id
         username
         email
       }
@@ -130,6 +137,7 @@ const REGISTER_USER = gql`
   mutation RegisterUser($newUser: NewUserInput!) {
     createNewUser(newUser:$newUser) {
       user {
+      id
         username
         email
       }
@@ -180,21 +188,25 @@ export default Vue.extend({
         this.alert = false;
         this.alertMsg = "";
         try{
-            const data:any = await this.$apolloProvider.defaultClient.query({
+            const data:any = await this.$apollo.query({
             query: AUTH_USER,
             variables:{
               username:this.username,
               password: this.password
             }
-          });
-            this.userStore.setUser(data.data.authenticateUser.user);
+            });
+            if(!data.data){
+              this.alert = true;
+              this.alertMsg = data.errors[0].message;
+            }else{
+              this.userStore.setUser(data.data.authenticateUser.user);
             // localStorage.setItem('token', JSON.stringify(data.data.authenticateUser.token));
             localStorage.setItem('token', data.data.authenticateUser.token);
-            console.log(localStorage.getItem('token'));
             this.$router.push("/home")
+            }
         }catch(err:any){
           this.alert = true;
-          this.alertMsg = err.message;
+          this.alertMsg = err.message.slice(14);
         }
       },
       async register(){
@@ -211,7 +223,7 @@ export default Vue.extend({
             lastName: this.lastName,
             email: this.email
           }
-          const data:any = await this.$apolloProvider.defaultClient.mutate({
+          const data:any = await this.$apollo.mutate({
             mutation: REGISTER_USER,
             variables:{
               newUser
@@ -219,13 +231,11 @@ export default Vue.extend({
           });
           this.userStore.setUser(data.data.createNewUser.user);
           localStorage.setItem('token', JSON.stringify(data.data.createNewUser.token));
-          console.log(localStorage.getItem('token'));
           this.$router.push("/home");
 
         }catch(err:any){
-          console.log(err);
           this.alert = true;
-          this.alertMsg = err.message;
+          this.alertMsg = err.message.slice(14);
         }
       },
       toggleAction(){
@@ -246,7 +256,7 @@ export default Vue.extend({
 </script>
 <style>
 #loginpage{
-  background: url('https://images.unsplash.com/photo-1487700160041-babef9c3cb55?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2052&q=80')
+  background: url('https://images.unsplash.com/photo-1624024382423-3c2450764af4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80')
     no-repeat center center fixed !important;
   background-size: cover;
 }

@@ -7,7 +7,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     getUser: (state) => state.user.username,
     getUserEmail: (state) => state.user.email,
-    getId: (state) => state.user.userId,
+    getId: (state) => state.user.id,
     getToken: (state) => state.user.token,
   },
   actions: {

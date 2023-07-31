@@ -4,11 +4,11 @@ import router from './router'
 import vuetify from './plugins/vuetify'
 import { createPinia, PiniaVuePlugin } from 'pinia';
 import piniaPluginPersistedState from "pinia-plugin-persistedstate"
-import { ApolloClient } from 'apollo-client'
+import { ApolloClient, DefaultOptions } from 'apollo-client'
 import { HttpLink } from 'apollo-link-http'
-import { InMemoryCache } from 'apollo-cache-inmemory'
 import { ApolloLink } from 'apollo-link'
 import VueApollo from 'vue-apollo'
+import { InMemoryCache } from 'apollo-cache-inmemory';
 
 Vue.use(PiniaVuePlugin)
 const pinia = createPinia()
@@ -37,9 +37,28 @@ const link = ApolloLink.from([
   httpLink
 ])
 
+// const apolloClient = new ApolloClient({
+//   link,
+//   cache: new InMemoryCache(),
+//   connectToDevTools: true
+// })
+
+const defaultOptions: DefaultOptions = {
+  watchQuery: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'ignore',
+  },
+  query: {
+    fetchPolicy: 'no-cache',
+    errorPolicy: 'all',
+  },
+}
+
+
 const apolloClient = new ApolloClient({
   link,
   cache: new InMemoryCache(),
+  defaultOptions: defaultOptions,
   connectToDevTools: true
 })
 

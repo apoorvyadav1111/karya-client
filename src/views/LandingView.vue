@@ -1,6 +1,6 @@
 <template>
     <v-layout>
-           <v-navigation-drawer app  permanent dark color="indigo darken-4" flat>
+           <v-navigation-drawer app  permanent dark  color="#121212" flat>
             <v-list>
               <v-list-item>
                 <v-list-item-avatar>
@@ -11,15 +11,14 @@
                 </v-list-item-avatar>
                 <v-list-item-title class="text-h1 text-overline">
                    Karya 
-
                 </v-list-item-title>
               </v-list-item>
             </v-list>
           <v-divider></v-divider>
-          <v-list nav>
+          <v-list  nav>
             <v-list-item v-on:click="showDashboardView" link>
               <v-list-item-icon>
-                <v-icon>mdi-view-dashboard</v-icon>
+                <v-icon color="amber accent-4" dark>mdi-view-dashboard</v-icon>
               </v-list-item-icon>
     
               <v-list-item-content>
@@ -28,7 +27,7 @@
             </v-list-item>
             <v-list-item v-on:click="showProjectView" link>
               <v-list-item-icon>
-                <v-icon>mdi mdi-projector-screen</v-icon>
+                <v-icon color="amber accent-4" dark>mdi mdi-projector-screen</v-icon>
               </v-list-item-icon>
     
               <v-list-item-content>
@@ -37,7 +36,7 @@
             </v-list-item>
             <v-list-item v-on:click="showTasksView" link>
               <v-list-item-icon>
-                <v-icon>mdi mdi-calendar-check</v-icon>
+                <v-icon color="amber accent-4" dark>mdi mdi-calendar-check</v-icon>
               </v-list-item-icon>
     
               <v-list-item-content>
@@ -45,7 +44,8 @@
               </v-list-item-content>
             </v-list-item>
             <v-divider></v-divider>
-          <v-list-group class="pt-1 pb-2" no-action prepend-icon="mdi mdi-pin">
+          <v-list-group class="pt-1 pb-2" no-action  dark prepend-icon="mdi mdi-pin">
+            <v-icon slot="prependIcon"  color="amber accent-4">mdi mdi-pin</v-icon>
             <template v-slot:activator>
               <v-list-item-content>
                 <v-list-item-title>Pinned Items</v-list-item-title>
@@ -87,29 +87,19 @@
                 </v-list-item-content>
               </v-list-item>
           </v-list-group>
-          <v-list-item v-on:click="showHelpView" link>
-            <v-list-item-icon>
-              <v-icon>mdi-check</v-icon>
-            </v-list-item-icon>
-  
-            <v-list-item-content>
-              <v-list-item-title > Comments </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-
           <v-divider></v-divider>
           <v-list-item v-on:click="showNotificationsView" link>
             <v-list-item-icon>
-              <v-icon>mdi mdi-bell-ring</v-icon>
-            </v-list-item-icon>s
+              <v-icon color="amber accent-4" dark>mdi mdi-bell-ring</v-icon>
+            </v-list-item-icon>
   
             <v-list-item-content>
               <v-list-item-title > Notifications </v-list-item-title>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item link >
+          <v-list-item link @click="showHelpView">
             <v-list-item-icon>
-              <v-icon>mdi-help-box</v-icon>
+              <v-icon color="amber accent-4" dark>mdi-help-box</v-icon>
             </v-list-item-icon>
             
             <v-list-item-content>
@@ -118,7 +108,7 @@
           </v-list-item>
           <v-list-item link v-on:click="showProfileView">
                 <v-list-item-icon>
-                  <v-icon>
+                  <v-icon color="amber accent-4" dark>
                     mdi-account-circle
                   </v-icon>
                 </v-list-item-icon>
@@ -130,10 +120,10 @@
               </v-list-item>
           <v-list-item link>
             <v-list-item-icon>
-                    <v-icon>mdi mdi-logout</v-icon>
+                    <v-icon color="amber accent-4" dark>mdi mdi-logout</v-icon>
                   </v-list-item-icon>
                 <v-list-item-content>
-                  <v-list-item-title class="subtitle font-weight-light" v-on:click="logout">
+                  <v-list-item-title v-on:click="logout">
                     Log Out
                   </v-list-item-title>
                 </v-list-item-content>
@@ -151,11 +141,11 @@
         <v-container v-if="currentView.projects">
           <ProjectsView />
         </v-container>
-        <v-container v-if="currentView.courseSequence">
-          <CourseSequenceView />
+        <v-container v-if="currentView.notifications">
+          <NotificationView />
         </v-container>
-        <v-container v-if="currentView.semesterLoad">
-          <SemesterLoadView />
+        <v-container v-if="currentView.help">
+          <HelpView />
         </v-container>
         <v-container v-if="currentView.upload">
           <UploadView />
@@ -171,6 +161,9 @@
 import DashboardView from "../views/DashboardView.vue"
 import TasksView from "./TasksView.vue";
 import ProjectsView from "./ProjectsView.vue";
+import NotificationView from "./NotificationView.vue";
+import HelpView from "./HelpView.vue";
+import ProfileView from "./ProfileView.vue";
 import { useUserStore } from "../store/user";
 import Vue from "vue";
 
@@ -180,7 +173,10 @@ import Vue from "vue";
         components:{
           DashboardView,
           ProjectsView,
-          TasksView
+          TasksView,
+          NotificationView,
+          HelpView,
+          ProfileView
         },
         data(){
           const userStore =  useUserStore();
@@ -190,8 +186,8 @@ import Vue from "vue";
               tasks:false,
               dashboard:false,
               projects:false,
-              university: false,
-              experts:false,
+              notifications: false,
+              help:false,
               courseSequence: false,
               programView:false,
               upload:false,
@@ -207,8 +203,8 @@ import Vue from "vue";
               this.currentView.tasks = false;
               this.currentView.dashboard = false;
               this.currentView.projects = false;
-              this.currentView.university = false;
-              this.currentView.experts = false;
+              this.currentView.notifications = false;
+              this.currentView.help = false;
               this.currentView.courseSequence = false;
               this.currentView.programView = false;
               this.currentView.upload=false
@@ -235,18 +231,14 @@ import Vue from "vue";
             this.resetAllViews(); 
             this.currentView.projects = true;
           },
-          showExpertView()
+          showHelpView()
           {
             this.resetAllViews(); 
-            this.currentView.experts = true;
-          },
-          showHelpView(){
-            this.resetAllViews();
-            this.currentView.courseSequence = true;
+            this.currentView.help = true;
           },
           showNotificationsView(){
             this.resetAllViews();
-            this.currentView.semesterLoad = true;
+            this.currentView.notifications = true;
           },
           showProgramView(){
             this.resetAllViews();

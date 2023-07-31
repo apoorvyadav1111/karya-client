@@ -43,4 +43,6 @@ export type TaskInput = {
     total_hours: number,
     assigned_to: string,
     assigned_by: string,
+    type?: string,
+    link?: string,
 }

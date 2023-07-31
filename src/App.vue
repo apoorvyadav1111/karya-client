@@ -15,10 +15,11 @@ export default Vue.extend({
 });
 </script>
 <style lang="scss">
-@import url("https://fonts.googleapis.com/css?family=Questrial");
 #app{
-  background-color: #e5e8f1;
+  background-color: rgb(36, 36, 36);
   background-size: cover;
-  font-family: "Questrial";
+  font-family: 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
 }
+
+
 </style>
