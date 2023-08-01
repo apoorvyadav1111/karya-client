@@ -16,6 +16,7 @@
     "apollo-link": "^1.2.14",
     "apollo-link-context": "^1.0.20",
     "apollo-link-http": "^1.5.17",
+    "chart.js": "^4.3.2",
     "core-js": "^3.8.3",
     "graphql": "^16.7.1",
     "graphql-tag": "^2.12.6",
@@ -23,6 +24,7 @@
     "pinia-plugin-persistedstate": "^3.1.0",
     "vue": "^2.6.14",
     "vue-apollo": "^3.1.0",
+    "vue-chartjs": "^5.2.0",
     "vue-router": "^3.5.1",
     "vuedraggable": "^2.24.3",
     "vuetify": "^2.6.0"

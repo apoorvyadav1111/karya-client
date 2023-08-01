@@ -307,7 +307,6 @@ export default Vue.extend({
             const resp = await this.$apollo.query({
                 query: GET_USER_DETAILS
             });
-            console.log('getting', resp);
             if(resp && resp.data && resp.data.getUser){
                 this.user = resp.data.getUser;
             }
@@ -362,7 +361,6 @@ export default Vue.extend({
                         }
                     });
                     this.success = true;
-                    console.log(resp);
                     this.successMsg = resp.data.updatePassword.message;
                 }catch(e:any){
                     this.error = true;

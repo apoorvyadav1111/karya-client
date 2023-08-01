@@ -683,7 +683,6 @@ export default Vue.extend({
     methods: {
         // create a method to show the create task view
         async generateTaskView(){
-            console.log("Generating Task View")
             let { data } = await this.$apollo.query({
                 query: GET_TASKS,
             });

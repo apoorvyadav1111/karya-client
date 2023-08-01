@@ -98,25 +98,21 @@ export default Vue.extend({
             this.invites = data.getAllInvites
         },
         async accept(id: string){
-            console.log(id);
             const resp = await this.$apollo.mutate({
                 mutation: MUTATE_ACCEPT_INVITE,
                 variables: {
                     acceptInviteId: id
                 }
             })
-            console.log(resp);
             await this.generateView();
         },
         async reject(id:string){
-            console.log(id);
             const resp = await this.$apollo.mutate({
                 mutation: MUTATE_REJECT_INVITE,
                 variables: {
                     rejectInviteId: id
                 }
             })
-            console.log(resp);
             await this.generateView();
         }
 

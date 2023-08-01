@@ -133,13 +133,13 @@
       <v-main>
         <!-- <AddComment university="RGPV"/> -->
         <v-container v-if="currentView.dashboard">
-          <DashboardView />
+          <DashboardView @showProjectDetails="showProjectDashboard"/>
         </v-container>
         <v-container v-if="currentView.tasks">
           <TasksView />
         </v-container>
         <v-container v-if="currentView.projects">
-          <ProjectsView />
+          <ProjectsView :projectId="project" :key="projectKey"/>
         </v-container>
         <v-container v-if="currentView.notifications">
           <NotificationView />
@@ -194,8 +194,9 @@ import Vue from "vue";
               semesterLoad:false,
               profile:false
             },
-            uniKey:0,
-            userStore
+            projectKey:0,
+            userStore,
+            project:""
           }
         },
         methods: {
@@ -250,6 +251,11 @@ import Vue from "vue";
           },showProfileView(){
             this.resetAllViews();
             this.currentView.profile = true;
+          },
+          showProjectDashboard(id:string){
+            this.project = id;
+            this.projectKey++;
+            this.showProjectView(); 
           }
         }
       }) 

@@ -910,9 +910,10 @@ export default Vue.extend({
     components: {
         draggable,
     },
+    props: ['projectId'],
     data() {
         const userStore = useUserStore();
-        const project = null;
+        const project = this.projectId;
         const tasks: Task[] = [] as Task[];
         const newProject: ProjectInput = {
             name:"",
@@ -978,15 +979,16 @@ export default Vue.extend({
             finishProjectDialog: false
         };
     },
-    async mounted() {
+    async created() {
         const { data } = await this.$apollo.query({
             query: GET_ALL_PROJECTS,
         });
         this.projects = data.getAllProjects;
+        await this.getProjectBoard();
     },
     methods: {
         async getProjectBoard() {
-            if(this.project === null) return;
+            if(this.project === null || this.project==='') return;
             for (const proj of this.projects) {
                 if (proj["id"] === this.project) {
                     this.projectInfo = proj;
@@ -1004,8 +1006,7 @@ export default Vue.extend({
                     project: this.project,
                 },
             });
-            this.team = data.getAllTeam;
-            console.log(this.team);
+            this.team = data.getAllTeam.filter((member: any) => member.member);
         },
         async getTasks(){
             const { data } = await this.$apollo.query({
@@ -1016,8 +1017,22 @@ export default Vue.extend({
                     }
                 },
             });
-            this.tasks = data.getTasks;
-            console.log(this.tasks);
+            this.tasks = data.getTasks.map((task: any) => {
+                if(task.assigned_by===null){
+                    task.assigned_by = {
+                        id: "",
+                        username: "",
+                    }
+                }
+                if(task.assigned_to===null){
+                    task.assigned_to = {
+                        id: "",
+                        username: "",
+                    }
+                }
+                return task;
+            });
+
         },
         createKanban(){
             this.kanban = {
@@ -1027,12 +1042,11 @@ export default Vue.extend({
                 "COMPLETED": [] as Task[],
             };
             for(const task of this.tasks){
-                console.log(task);
                 this.kanban[task.status].push(task);
             }
         },
         async moveItem(event: any) {
-            console.log(event);
+
             const itemId = event.draggedContext.element.id;
             const newIndex  = event.relatedContext.index;
             const newStatus:Status = event.to.classList[1];
@@ -1068,7 +1082,6 @@ export default Vue.extend({
                 due_date: this.editableTask.due_date,
                 assigned_to: this.editableTask.assigned_to
             }
-            console.log(patch);
             const itemId = this.editableTask.id;
             if(patch.link===itemId){
                 this.alert = true;
