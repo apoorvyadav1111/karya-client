@@ -343,7 +343,7 @@ export default Vue.extend({
             await this.getUserDetails();
         },
         async cancelUpdateUser(){
-            this.notEditUser = false;
+            this.notEditUser = true;
             await this.getUserDetails();
         },
         async updatePassword(){
