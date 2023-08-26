@@ -23,7 +23,8 @@
 
 
 ##### Image: Project Dashboard
- <img width="1440" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/c751bf02-f4f6-4ab0-952f-c8b6b89dfd39">
+<img width="1440" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/cbaf1004-6f74-4419-b15d-58fc8319be16">
+
 
 ##### Image: Create a Project
 <img width="500" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/4894363b-15e2-4b58-b301-7f497f1fa621">
@@ -56,7 +57,8 @@
 - Validates uniqueness to username and email
 - Delete the user account from the app
 
-<img width="1440" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/0f566001-3b24-420c-8668-04835ccc8032">
+<img width="1440" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/8215ae36-9296-4147-a8da-e95b0ce34317">
+
 
 ##### Delete Account:
 <img width="399" alt="image" src="https://github.com/apoorvyadav1111/karya-client/assets/32174554/32e00e43-6dad-4e7f-93d9-2c88ccaceed4">
